@@ -139,7 +139,7 @@
                 <label class="form-label">Imagen</label>
                 <input class="form-control" type="file" name="imagen">
             </div>
-            <input type="submit" value="Añadir">
+            <input  class="btn btn-dark" type="submit" value="Añadir">
         </fieldset>
     </form>
 

@@ -30,8 +30,6 @@
   <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_producto = $_POST["id_producto"];
-    echo "<br><br><p>La El producto seleccionado es $id_producto</p>";
-
     $usuario = $_SESSION['usuario'];
     $sql1 = "SELECT idCestas FROM cestas WHERE usuario = '$usuario'";
     $res = $conexion->query($sql1);
@@ -42,7 +40,8 @@
     }
 
     $sql2 = "INSERT INTO productoscestas (idProducto, idCesta, cantidad) 
-        VALUES ($id_producto, $id_cesta, 1)";
+        VALUES ($id_producto, $id_cesta, 1)
+        ON DUPLICATE KEY UPDATE cantidad = cantidad + 1;";
     $conexion->query($sql2);
 
     // para insertar en productos_cestas: id_producto, id_cesta, cantidad
@@ -58,10 +57,10 @@
   }
   ?>
 
-  <!-- NAVAR -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Offcanvas dark navbar</a>
+      <a class="navbar-brand" href="#">Pagina Principal</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -145,6 +144,11 @@
     <?php if ($usuario == "invitado") : ?>
       <a class="btn btn-dark" href="registroUsuario.php">Registrarse</a>
     <?php endif; ?>
+
+    <?php if ($usuario != 'invitado') : ?>
+      <a class="btn btn-dark" href="cesta.php">Cesta</a>
+    <?php endif; ?>
+
 
   </div>
   <div class="container">
