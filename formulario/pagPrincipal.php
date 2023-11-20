@@ -13,7 +13,7 @@
 
 <body>
 
-<?php
+  <?php
   session_start();
   if (isset($_SESSION["usuario"])) {
     $usuario = $_SESSION["usuario"];
@@ -25,27 +25,28 @@
   $rol ??= 'cliente';
   ?>
 
-<?php
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
-        $id_producto = $_POST["id_producto"];
-        echo "<br><br><p>La El producto seleccionado es $id_producto</p>";
 
-        $usuario = $_SESSION['usuario'];
-        $sql1 = "SELECT idCestas FROM cestas WHERE usuario = '$usuario'";
-        $res = $conexion -> query($sql1);
 
-        if($res->num_rows > 0){
-          $filaCestas = $res->fetch_assoc();
-          $id_cesta = $filaCestas["idCestas"];
+  <?php
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_producto = $_POST["id_producto"];
+    echo "<br><br><p>La El producto seleccionado es $id_producto</p>";
 
-        }
+    $usuario = $_SESSION['usuario'];
+    $sql1 = "SELECT idCestas FROM cestas WHERE usuario = '$usuario'";
+    $res = $conexion->query($sql1);
 
-        $sql2 = "INSERT INTO productoscestas (idProducto, idCesta, cantidad) 
+    if ($res->num_rows > 0) {
+      $filaCestas = $res->fetch_assoc();
+      $id_cesta = $filaCestas["idCestas"];
+    }
+
+    $sql2 = "INSERT INTO productoscestas (idProducto, idCesta, cantidad) 
         VALUES ($id_producto, $id_cesta, 1)";
-        $conexion->query($sql2);
-        
-        // para insertar en productos_cestas: id_producto, id_cesta, cantidad
-        /*
+    $conexion->query($sql2);
+
+    // para insertar en productos_cestas: id_producto, id_cesta, cantidad
+    /*
             id_producto: lo tenemoos
             cantidad: la tenemos (1)
             ¿id_cesta?
@@ -54,8 +55,8 @@
 
             luego podremos insertar en productos_cestas
         */
-    }
-    ?>
+  }
+  ?>
 
   <!-- NAVAR -->
   <nav class="navbar navbar-dark bg-dark fixed-top">
@@ -188,26 +189,32 @@
                     <td>" . $producto->descripcion . "</td>
                     <td>" . $producto->cantidad . "</td>
                     <td>" ?>
-                    <img width="50" height="75" src="<?php echo '../' . $producto->imagen ?>"></td>
-                   <td>
-                    <form action="" method="post">
-                        <input type="hidden"
-                               name="id_producto"
-                               value="<?php echo $producto -> idProducto ?>">
-                        <input class="btn btn-warning" type="submit" value="Añadir">
-                    </form>
-                </td>
-            </tr>
-      
-     
-        
-      <?php
-      /*
+        <img width="50" height="75" src="<?php echo '../' . $producto->imagen ?>"></td>
+
+        <?php
+
+        if (($_SESSION["usuario"]) != "invitado") { ?>
+          <td>
+            <form action="" method="post">
+              <input type="hidden" name="id_producto" value="<?php echo $producto->idProducto ?>">
+              <input class="btn btn-warning" type="submit" value="Añadir">
+            </form>
+          </td>
+        <?php
+        }
+        ?>
+
+        </tr>
+
+
+
+        <?php
+        /*
           if($usuario != "invitado"){
             "<td></td>"
           }
           */
-      ?>
+        ?>
 
 
       <?php "</tr>";
