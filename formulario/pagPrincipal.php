@@ -13,6 +13,7 @@
 
 <body>
 
+<!-- Aqui comprobamos si la variable usuario existe, si existe la guardo en variables, si no existe sabremos que es invitado-->
   <?php
   session_start();
   if (isset($_SESSION["usuario"])) {
@@ -22,30 +23,37 @@
     $_SESSION["usuario"] = "invitado";
     $usuario = $_SESSION["usuario"];
   }
+
+  /* Si la variable rol no esta definida se le asignara el valor de cliente*/ 
   $rol ??= 'cliente';
   ?>
 
 
 
+<!-- Verificamos si la solicitud es de tipo POST-->
+
   <?php
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_producto = $_POST["id_producto"];
-    $usuario = $_SESSION['usuario'];
-    $sql1 = "SELECT idCestas FROM cestas WHERE usuario = '$usuario'";
+    $usuario = $_SESSION['usuario'];                      /* Recuperamos los datos */
+    $sql1 = "SELECT idCestas FROM cestas WHERE usuario = '$usuario'";  /* Hacemos unas consultas para obtener la id de cesta */
     $res = $conexion->query($sql1);
 
-    if ($res->num_rows > 0) {
+    if ($res->num_rows > 0) {   /* Si se devuelve una fila quiere decir que se encontro una cesta asociada al usuario */ 
       $filaCestas = $res->fetch_assoc();
       $id_cesta = $filaCestas["idCestas"];
     }
 
-    $sql2 = "INSERT INTO productoscestas (idProducto, idCesta, cantidad) 
+    $sql2 = "INSERT INTO productoscestas (idProducto, idCesta, cantidad)   /* Esto es para insertar un nuevo registro en la tabla productos cestas*/ 
         VALUES ($id_producto, $id_cesta, 1)
         ON DUPLICATE KEY UPDATE cantidad = cantidad + 1;";
     $conexion->query($sql2);
 
-    // para insertar en productos_cestas: id_producto, id_cesta, cantidad
-    /*
+  }
+  ?>
+
+   <!--  para insertar en productos_cestas: id_producto, id_cesta, cantidad
+    
             id_producto: lo tenemoos
             cantidad: la tenemos (1)
             ¿id_cesta?
@@ -53,11 +61,10 @@
             y hacer una consulta a la tabla cestas para sacar el id de la cesta
 
             luego podremos insertar en productos_cestas
-        */
-  }
-  ?>
+-->
+  
 
-  <!-- NAVBAR -->
+  <!-- NAVBAR  no le he puesto funcionalidad pero lo dejo para que quede un poquito mas estetico -->
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Pagina Principal</a>
@@ -101,31 +108,7 @@
   </nav>
 
 
-
-  <div class="container1">
-    <!-- CAROUSEL
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="../img/img1.png" class="d-block w-100" alt="">
-    </div>
-    <div class="carousel-item">
-      <img src="../img/gal1.jpg" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="../img/gal2.jpg" class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
- -->
-  </div>
+  <!-- Botones para cerrar sesion, registrarse, iniciar sesion, cesta y registrar nuevos productos-->
   <div class="container">
     <h1>Pagina principal</h1>
     <h2>Bienvenid@ <?php echo $usuario ?></h2>
@@ -151,6 +134,8 @@
 
 
   </div>
+
+<!-- Buscamos y metemos en la variable resultado todo lo de la tabla productos-->
   <div class="container">
     <h1>Lista de productos</h1>
   </div>
@@ -158,6 +143,8 @@
   $sql = "SELECT * FROM productos";
   $resultado = $conexion->query($sql);
   $productos = [];
+
+/* Recorremos y creamos un objeto Producto de cada fila y se añade a un array*/ 
 
   while ($fila = $resultado->fetch_assoc()) {
     $nuevo_producto =
@@ -172,6 +159,8 @@
     array_push($productos, $nuevo_producto);
   }
   ?>
+
+<!-- Creamos una tabla -->
   <table class="table table-striped">
     <thead>
       <tr>
@@ -185,6 +174,7 @@
     </thead>
     <tbody>
       <?php
+      /* Iteramos y para cada producto se genera una fila con celdas que van a contener informacion del producto */ 
       foreach ($productos as $producto) {
         echo "<tr>
                     <td>" . $producto->idProducto . "</td>
@@ -195,8 +185,9 @@
                     <td>" ?>
         <img width="50" height="75" src="<?php echo '../' . $producto->imagen ?>"></td>
 
-        <?php
 
+        <?php
+        /* Aqui compruebo que si el usuario no es invitado aparecera un boton de añadir los productos*/ 
         if (($_SESSION["usuario"]) != "invitado") { ?>
           <td>
             <form action="" method="post">
@@ -208,18 +199,7 @@
         }
         ?>
 
-        </tr>
-
-
-
-        <?php
-        /*
-          if($usuario != "invitado"){
-            "<td></td>"
-          }
-          */
-        ?>
-
+      </tr>
 
       <?php "</tr>";
       }

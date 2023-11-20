@@ -12,6 +12,7 @@
 
 <body>
 
+ <!-- Aqui comprobamos si la variable usuario existe, si existe la guardo en variables, si no existe sabremos que es invitado-->
     <?php
     session_start();
     if (isset($_SESSION["usuario"])) {
@@ -50,6 +51,7 @@
             [$nombreProducto, $precio, $cantidad_en_cesta, $imagen]);
     }
     ?>
+    <!-- Aqui hacemos una tabla y la recorremos para mostrar los productos de el usuario que sea -->
 
     <table class="table table-striped">
         <thead>

@@ -15,9 +15,11 @@
     <?php
     session_start();
 
+    #Aqui vamos a verificar si el rol no es admin, si no lo es nos va a reedirigir a la pagina principal
     if($_SESSION['rol'] != 'admin'){
         header('location: pagPrincipal.php');
     }
+    #Comprobamos si la solicitud es de tipo post y obtenemos y depuramos los datos enviados del formulario
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $temp_nombre = depurar($_POST["nombreProducto"]);
         $temp_precio = depurar($_POST["precioProducto"]);
@@ -33,6 +35,7 @@
 
         $ruta_final = "imagenes/" . $nombre_imagen;
 
+        #Esto es para mover un archivo subido al servidor desde una ubicacion temporal a una final
         move_uploaded_file($ruta_temporal, '../' . $ruta_final);
 
         //Validación del nombre
@@ -103,6 +106,7 @@
             }
         }
 
+        #Comprobamos que todas las variables esten definidas e insertamos un nuevo producto a la base de datos
         if (isset($nombre) && isset($precioProducto) && isset($descripcion) && isset($cantidad)) {
             $sql = "INSERT INTO productos
             VALUES (DEFAULT,
@@ -117,6 +121,8 @@
 
 
     ?>
+
+    <!-- Formulario de producto, que contiene nombre, precio, descripcion, cantidad y una imagen-->
 
     <form class="form" action="" method="post" enctype="multipart/form-data">
         <fieldset>

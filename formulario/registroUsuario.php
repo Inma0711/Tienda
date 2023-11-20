@@ -19,6 +19,8 @@
 
         # VALIDACIONES
 
+        //Validacion usuario
+
         if (!strlen($temp_usuario) > 0) {
             $err_usuario = "El nombre de usuario es obligatorio";
         } else {
@@ -31,7 +33,7 @@
             }
         }
 
-        //  LUEGO VALIDAMOS LA CONTRASEÑA
+        //  LValidacion contraseña
         if (empty($_POST["contrasena"])) {
             $err_usuario = "Introduzca la contraseña";
         } else {
@@ -49,7 +51,7 @@
         }
 
 
-        // VALIDACION EDAD
+        // VAalidacion edad
         if (strlen($temp_edad_nacimiento) == 0) {
             $err_edad= "La fecha de nacimiento es obligatoria";
         } else {
@@ -65,7 +67,7 @@
     }
 
 
-        // CUANDO CREAMOS USUARIO SE NOS CREA UNA CESTA
+        // Cuando creamos usuario se nos crea una cesta
 
         if (isset($usuario) && isset($contrasena) && isset($edad_nacimiento)) {
             $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
@@ -80,7 +82,7 @@
     
     ?>
 
-
+ <!-- Formulario para registrar usuario, contiene usuario, contraseña y edad-->
     <div class="container">
         <h1>Registrarse</h1>
         <form action="" method="post">
