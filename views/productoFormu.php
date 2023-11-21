@@ -136,7 +136,7 @@
             <?php if (isset($err_nombre)) echo $err_nombre ?>
             <br><br>
             <label>Precio: </label>
-            <input type="number" name="precioProducto">
+            <input type="number" name="precioProducto" step="0.01">
             <?php if (isset($err_precio)) echo $err_precio ?>
             <br><br>
             <label>Descripcion: </label>
