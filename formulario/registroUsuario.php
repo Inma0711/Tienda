@@ -33,7 +33,7 @@
             }
         }
 
-        //  LValidacion contraseña
+        //  Validacion contraseña
         if (empty($_POST["contrasena"])) {
             $err_usuario = "Introduzca la contraseña";
         } else {
@@ -61,7 +61,7 @@
             if (($anio_actual - $anio > 12) && ($anio_actual - $anio < 120)) {
                 $edad_nacimiento = $temp_edad_nacimiento;
             } else {
-                $err_edad = "La fecha de nacimiento no es válida (menor de 120 años y mayor a 12 años)";
+                $err_edad = "La fecha de nacimiento no es valida";
             }
         }
     }

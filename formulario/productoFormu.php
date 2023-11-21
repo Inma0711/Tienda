@@ -16,7 +16,7 @@
     session_start();
 
     #Aqui vamos a verificar si el rol no es admin, si no lo es nos va a reedirigir a la pagina principal
-    if($_SESSION['rol'] != 'admin'){
+    if ($_SESSION['rol'] != 'admin') {
         header('location: pagPrincipal.php');
     }
     #Comprobamos si la solicitud es de tipo post y obtenemos y depuramos los datos enviados del formulario
@@ -26,12 +26,12 @@
         $temp_descripcion = depurar($_POST["descripcion"]);
         $temp_cantidad = depurar($_POST["cantidad"]);
 
-        //$_FILES["nombreCampo"]["queQueremosCoger"] -> TYPE, NAME, SIZE
+
         $nombre_imagen = $_FILES["imagen"]["name"];
         $tipo_imagen = $_FILES["imagen"]["type"];
         $tamano_imagen = $_FILES["imagen"]["size"];
         $ruta_temporal = $_FILES["imagen"]["tmp_name"];
-        //echo $nombre_imagen . " " . $tipo_imagen . " " . $tamano_imagen . " " . $ruta_temporal;
+
 
         $ruta_final = "imagenes/" . $nombre_imagen;
 
@@ -40,65 +40,69 @@
 
         //Validación del nombre
         if (strlen($temp_nombre) == 0) {
-            $err_nombre = "El nombre es un campo obligatorio";
+            $err_nombre = "Campo obligatorio";
         } else {
             if (strlen($temp_nombre) > 40) {
-                $err_nombre = "El nombre no puede tener más de 40 caracteres";
+                $err_nombre = "No puede tener más de 40 caracteres";
             } else {
                 $patron = "/^[A-Za-z0-9 ]+$/";
                 if (!preg_match($patron, $temp_nombre)) {
-                    $err_nombre = "El nombre debe estar compuesto por caracteres, números
-            y espacios en blanco.";
+                    $err_nombre = "El nombre debe tener caracteres, números y espacios";
                 } else {
                     $nombre = $temp_nombre;
                 }
             }
         }
 
-        //Validación del precio
-        if (strlen($temp_precio) == 0) {
-            $err_precio = "El precio es un campo obligatorio";
-        } else {
-            if (!is_numeric($temp_precio)) {
-                $err_precio = "El precio tiene que ser un número.";
-            } else {
-                $temp_precio = (float)$temp_precio;
-                if ($temp_precio < 0) {
-                    $err_precio = "El precio no puede ser negativo";
-                } else {
-                    if ($temp_precio > 99999.99) {
-                        $err_precio = "El precio no puede ser superior a 99999.99";
-                    } else {
-                        $precioProducto = $temp_precio;
-                    }
-                }
-            }
-        }
 
         //Validación de la descripción
         if (strlen($temp_descripcion) == 0) {
-            $err_descripcion = "La descripción es un campo obligatorio";
+            $err_descripcion = "Campo obligatorio";
         } else {
             if (strlen($temp_descripcion) > 255) {
-                $err_descripcion = "La descripción no puede ser superior a 255 caracteres";
+                $err_descripcion = "No puede ser superior a 255 caracteres";
             } else {
                 $descripcion = $temp_descripcion;
             }
         }
 
+
+
+        //Validación del precio
+        if (strlen($temp_precio) == 0) {
+            $err_precio = "Campo obligatorio";
+        } else {
+            if (!is_numeric($temp_precio)) {
+                $err_precio = "Tiene que ser un número.";
+            } else {
+                $temp_precio = (float)$temp_precio;
+                if ($temp_precio < 0) {
+                    $err_precio = "No puede ser negativo";
+                } else {
+                    if ($temp_precio > 99999.99) {
+                        $err_precio = "El precio no puede ser superior a 99999.99";
+                    } else {
+                        $precio_producto = $temp_precio;
+                    }
+                }
+            }
+        }
+
+
+
         //Validación de la cantidad
         if (strlen($temp_cantidad) == 0) {
-            $err_cantidad = "La cantidad es un campo obligatorio";
+            $err_cantidad = "Campo obligatorio";
         } else {
             if (filter_var($temp_cantidad, FILTER_VALIDATE_INT) === FALSE) {
-                $err_cantidad = "La cantidad tiene que ser un número entero";
+                $err_cantidad = "Tiene que ser un número entero";
             } else {
                 $temp_cantidad = (int)$temp_cantidad;
                 if ($temp_cantidad < 0) {
-                    $err_cantidad = "La cantidad no puede ser negativa";
+                    $err_cantidad = "No puede ser negativa";
                 } else {
                     if ($temp_cantidad > 99999) {
-                        $err_cantidad = "La cantidad no puede ser superior a 99999";
+                        $err_cantidad = "No puede ser superior a 99999";
                     } else {
                         $cantidad = $temp_cantidad;
                     }
@@ -107,11 +111,11 @@
         }
 
         #Comprobamos que todas las variables esten definidas e insertamos un nuevo producto a la base de datos
-        if (isset($nombre) && isset($precioProducto) && isset($descripcion) && isset($cantidad)) {
+        if (isset($nombre) && isset($precio_producto) && isset($descripcion) && isset($cantidad)) {
             $sql = "INSERT INTO productos
             VALUES (DEFAULT,
                     '$nombre',
-                    $precioProducto,
+                    $precio_producto,
                     '$descripcion',
                     $cantidad,
                     '$ruta_final')";
@@ -134,7 +138,7 @@
             <input type="number" name="precioProducto">
             <?php if (isset($err_precio)) echo $err_precio ?>
             <br><br>
-            <label>Descripción: </label>
+            <label>Descripcion: </label>
             <input type="text" name="descripcion">
             <?php if (isset($err_descripcion)) echo $err_descripcion ?>
             <br><br>
@@ -145,7 +149,7 @@
                 <label class="form-label">Imagen</label>
                 <input class="form-control" type="file" name="imagen">
             </div>
-            <input  class="btn btn-dark" type="submit" value="Añadir">
+            <input class="btn btn-dark" type="submit" value="Añadir">
         </fieldset>
     </form>
 

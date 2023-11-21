@@ -15,6 +15,8 @@
     <!-- Aqui comprobamos si la variable usuario existe, si existe la guardo en variables, si no existe sabremos que es invitado-->
     <?php
     session_start();
+    $filas_tabla = [];
+
     if (isset($_SESSION["usuario"]) && $_SESSION["usuario"] != 'invitado') {
         $usuario = $_SESSION["usuario"];
     } else {
@@ -32,21 +34,20 @@
     # Sacar productos de productoscestas a partir de id de cesta
     $sql2 = "SELECT * FROM productoscestas WHERE idCesta = $id_cesta";
     $resultado2 = $conexion->query($sql2);
-    $filas_tabla = [];
     while ($fila = $resultado2->fetch_assoc()) {
         $id_producto = $fila['idProducto'];
         $sql3 = "SELECT * FROM productos WHERE idProducto = $id_producto";
         $resultado3 = $conexion->query($sql3);
         $fila2 = $resultado3->fetch_assoc();
 
-        $nombreProducto = $fila2['nombreProducto'];
+        $nombre_producto = $fila2['nombreProducto'];
         $precio = $fila2['precio'];
-        $cantidad_en_cesta = $fila['cantidad'];
+        $cantidad_cesta = $fila['cantidad'];
         $imagen = $fila2['imagen'];
 
         array_push(
             $filas_tabla,
-            [$nombreProducto, $precio, $cantidad_en_cesta, $imagen]
+            [$nombre_producto, $precio, $cantidad_cesta, $imagen]
         );
     }
     ?>
@@ -63,19 +64,19 @@
         </thead>
         <tbody>
             <?php
-            $precioTotal = 0;
-            $numeroProductos = 0;
+            $precio_total = 0;
+            $numero_productos = 0;
             foreach ($filas_tabla as $fila_tabla) {
-                list($nombreProducto, $precio, $cantidad_en_cesta, $imagen) = $fila_tabla;
+                list($nombre_producto, $precio, $cantidad_cesta, $imagen) = $fila_tabla;
                 echo "<tr>
-                    <td>" . $nombreProducto . "</td>
+                    <td>" . $nombre_producto . "</td>
                     <td>" . $precio . "</td>
-                    <td>" . $cantidad_en_cesta . "</td>
+                    <td>" . $cantidad_cesta . "</td>
                     <td>" ?>
                 <img width="50" height="75" src="<?php echo '../' . $imagen ?>"></td>
             <?php
-                $precioTotal += $precio * $cantidad_en_cesta;
-                $numeroProductos++;
+                $precio_total += $precio * $cantidad_cesta;
+                $numero_productos++;
             }
             ?>
             </tr>
@@ -87,9 +88,9 @@
 
 
     <form method="post" action="realizarPedido.php">
-        <input type="hidden" name="precioTotal" value="<?php echo $precioTotal ?>">
+        <input type="hidden" name="precioTotal" value="<?php echo $precio_total ?>">
         <input type="hidden" name="idCesta" value="<?php echo $id_cesta ?>">
-        <input type="hidden" name="numeroProductos" value="<?php echo $numeroProductos ?>">
+        <input type="hidden" name="numeroProductos" value="<?php echo $numero_productos ?>">
         <input type="submit" name="ENVIAR" value="Realizar el pago" class="btn btn-dark">
     </form>
 
