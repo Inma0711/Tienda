@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <?php require '../funciones/depurar.php'; ?>
-    <?php require '../funciones/conexion_tienda.php'; ?>
+    <?php require '../util/depurar.php'; ?>
+    <?php require '../util/conexion_tienda.php'; ?>
     <title>Document</title>
+ 
 </head>
 
 <body>
@@ -33,10 +34,10 @@
         $ruta_temporal = $_FILES["imagen"]["tmp_name"];
 
 
-        $ruta_final = "imagenes/" . $nombre_imagen;
+        $ruta_final = "imagen/" . $nombre_imagen;
 
         #Esto es para mover un archivo subido al servidor desde una ubicacion temporal a una final
-        move_uploaded_file($ruta_temporal, '../' . $ruta_final);
+        move_uploaded_file($ruta_temporal, $ruta_final);
 
         //Validación del nombre
         if (strlen($temp_nombre) == 0) {

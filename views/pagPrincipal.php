@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <?php require '../funciones/conexion_tienda.php' ?>
+  <?php require '../util/conexion_tienda.php' ?>
   <?php require 'producto.php' ?>
-  <link rel="stylesheet" href="../CSS/style.css">
+
   <title>Document</title>
 </head>
 
@@ -96,7 +96,7 @@
   <div class="container">
     <h1>Pagina principal</h1>
     <h2>Bienvenid@ <?php echo $usuario ?></h2>
-    <a class="btn btn-dark" href="../funciones/cerrar_sesion.php">Cerrar sesion</a>
+    <a class="btn btn-dark" href="../util/cerrar_sesion.php">Cerrar sesion</a>
 
     <!-- Añadir enlace a registro de productos solo si el usuario es admin -->
     <?php if ($rol == 'admin') : ?>
@@ -167,7 +167,7 @@
                     <td>" . $producto->descripcion . "</td>
                     <td>" . $producto->cantidad . "</td>
                     <td>" ?>
-        <img width="50" height="75" src="<?php echo '../' . $producto->imagen ?>"></td>
+        <img width="50" height="75" src="<?php echo  $producto->imagen ?>"></td>
 
 
         <?php

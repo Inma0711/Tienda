@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <?php require 'producto.php' ?>
-    <?php require '../funciones/conexion_tienda.php' ?>
+    <?php require '../util/conexion_tienda.php' ?>
     <title>Cesta</title>
 </head>
 
@@ -73,7 +73,7 @@
                     <td>" . $precio . "</td>
                     <td>" . $cantidad_cesta . "</td>
                     <td>" ?>
-                <img width="50" height="75" src="<?php echo '../' . $imagen ?>"></td>
+                <img width="50" height="75" src="<?php echo $imagen ?>"></td>
             <?php
                 $precio_total += $precio * $cantidad_cesta;
                 $numero_productos++;

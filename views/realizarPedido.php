@@ -4,7 +4,7 @@ $id_productos = [];
 $cantidad = [];
 
     /* Verificamos si la variable esta definida si no nos dirige a iniciar sesion */ 
-    require '../funciones/conexion_tienda.php';
+    require '../util/conexion_tienda.php';
     session_start();
     if(!isset($_SESSION["usuario"])) {
         header("Location: iniciarSesion.php");
